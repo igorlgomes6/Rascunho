@@ -104,7 +104,7 @@ no       código
 		<p style="color:crimson">Cor: Crimson<p>
 		<p style="color:gold">Cor: Gold<p>
 		
-		<img id="fornalha" src="imagens/xarope.jpg" alt="Cachorro xarope" width="1069" height="auto" max-width="100%" usemap="#fornalha">
+		<img id="fornalha" src="imagens/xarope.jpg" alt="Cachorro xarope" height="auto" max-width="100%" usemap="#fornalha">
 			<map name="fornalha">
 				<area target="_blank" alt="Focinho" title="Focinho" href="imagens/focinho.jpg" coords="553,509, 7" shape="circle" onclick="aviso()">
 				<area target="_blank" alt="Furnace" title="Fornalha" href="subHTML/furnace.html" coords="716,350,814,339,983,382,926,521,818,546,687,471" shape="poly">
@@ -114,7 +114,50 @@ no       código
 					function aviso() {
 						alert("O focinho é tão bonitinho!");
 					}
-				</script>
+				
+
+		<script>
+    function resizeMap() {
+        var image = document.getElementById('fornalha');
+        var map = document.querySelector('map[name="fornalha"]');
+
+        if (!image || !map) return; // Garante que os elementos existem
+
+        var originalWidth = 1069; // Largura original da imagem
+        var originalHeight = 765; // Altura original da imagem
+
+        var newWidth = image.offsetWidth;
+        var newHeight = image.offsetHeight;
+
+        var ratio = newWidth / originalWidth;
+
+        var areas = map.getElementsByTagName('area');
+        for (var i = 0; i < areas.length; i++) {
+            var area = areas[i];
+            var originalCoords = area.dataset.originalCoords.split(',');
+            var newCoords = [];
+            
+            for (var j = 0; j < originalCoords.length; j++) {
+                newCoords.push(Math.round(originalCoords[j] * ratio));
+            }
+            area.coords = newCoords.join(',');
+        }
+    }
+
+    // Armazena as coordenadas originais das áreas antes de redimensionar
+    window.onload = function() {
+        var areas = document.querySelector('map[name="fornalha"]').getElementsByTagName('area');
+        for (var i = 0; i < areas.length; i++) {
+            areas[i].dataset.originalCoords = areas[i].coords;
+        }
+        resizeMap();
+    };
+
+    // Recalcula o mapa quando a janela é redimensionada
+    window.onresize = function() {
+        resizeMap();
+    };
+</script>
 				
 		<!--Comentários-->
 
@@ -367,6 +410,7 @@ no       código
 	</body>
 
 </html>
+
 
 
 
